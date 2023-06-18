@@ -29,7 +29,19 @@ public class UserService {
 
     public UserEntity createNewUser(UserEntity user){
         return userRepository.save(user);
+    }
+
+    public void deleteUser(Long id){
+        this.getUser(id);
+        userRepository.deleteById(id);
+    }
+
+    public UserEntity putUser(UserEntity entity){
+        UserEntity user = this.getUser(entity.getId());
         
+        entity.setEmail(user.getEmail());
+        entity.setPassword(user.getPassword());
         
+        return userRepository.save(entity);
     }
 }
