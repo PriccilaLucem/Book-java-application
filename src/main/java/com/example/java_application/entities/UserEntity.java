@@ -2,15 +2,19 @@ package com.example.java_application.entities;
 
 import java.io.Serializable;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
 import org.mindrot.jbcrypt.BCrypt;
+
+import com.example.java_application.exceptions.BadRequestException;
 
 @Entity
 @Table(name = "users")
@@ -24,8 +28,8 @@ public class UserEntity implements Serializable{
     private String password; 
     @Column(name = "nick_name", nullable = false)
     private String nickName;
-    @OneToOne
-    @JoinColumn(name = "validate_user_id", nullable = false)
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "validate_user_id", nullable = true)
     private validateUser validateUser;
 
 
@@ -33,14 +37,26 @@ public class UserEntity implements Serializable{
     }
 
 
-    public UserEntity(Long id, String email, String password, String nickName, validateUser validateUser) {
+    public UserEntity(Long id, String email, String password, String nickName) {
         this.id = id;
         this.email = email;
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         this.nickName = nickName;
-        this.validateUser = validateUser;
     }
 
+    @PrePersist
+    public void ValidateData(){
+    
+        if(!isValidEmail(this.email)){
+            System.out.println(this.email);
+            throw new BadRequestException("Invalid email addresss");
+        }
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return email != null && email.matches(emailRegex);
+    }
     public Long getId() {
         return this.id;
     }
@@ -53,13 +69,13 @@ public class UserEntity implements Serializable{
         return this.email;
     }
 
-
+    
     public validateUser getValidateUser() {
         return this.validateUser;
     }
 
     public void setValidateUser(validateUser validateUser) {
-        this.validateUser = validateUser;
+        this.validateUser = new validateUser();
     }
 
 
@@ -75,11 +91,11 @@ public class UserEntity implements Serializable{
         this.password = password;
     }
 
-    public String getName() {
+    public String getNickName() {
         return this.nickName;
     }
 
-    public void setName(String name) {
+    public void setNickName(String name) {
         this.nickName = name;
     }
 

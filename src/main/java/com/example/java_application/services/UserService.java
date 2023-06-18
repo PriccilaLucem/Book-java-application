@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.example.java_application.entities.UserEntity;
 import com.example.java_application.exceptions.NotFoundException;
 import com.example.java_application.repositories.UserRepository;
+
 import java.util.List;
 
 @Service
 public class UserService {
-    
+
+
     @Autowired
     private UserRepository userRepository;
 
@@ -23,5 +25,11 @@ public class UserService {
     public List<UserEntity> getAllUsers(){
         List<UserEntity> users = userRepository.findAll();
         return users;
+    }
+
+    public UserEntity createNewUser(UserEntity user){
+        return userRepository.save(user);
+        
+        
     }
 }

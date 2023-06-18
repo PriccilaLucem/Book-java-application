@@ -18,17 +18,17 @@ public class validateUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "is_valid", nullable = false)
+    @Column(name = "is_valid",columnDefinition = "boolean default false", nullable = false)
     private Boolean isValid;
     @Column(name = "validated_date")
     private Date validatedDate;
   
     public validateUser() {
+        this.isValid = false;
     }
 
     public validateUser(Long id, Date validatedDate) {
         this.id = id;
-        this.isValid = false;
         this.validatedDate = validatedDate;
     }
 

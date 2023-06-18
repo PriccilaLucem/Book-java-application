@@ -1,7 +1,7 @@
 package com.example.java_application.entities.userDto;
 
 import com.example.java_application.entities.validateUser;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
@@ -9,18 +9,17 @@ public class UserDtoV1 {
     private Long id;
     private String nickName;
     private String email;
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private validateUser validateUser;
 
     public UserDtoV1() {
     }
 
-    public UserDtoV1(String email, Long id, String password, validateUser validateUser) {
+    public UserDtoV1(String email, Long id, String password) {
         this.email = email;
         this.id = id;
         this.password = password;
-        this.validateUser = validateUser;
     }
 
 
@@ -48,7 +47,6 @@ public class UserDtoV1 {
     public void setId(Long id) {
         this.id = id;
     }
-
     public String getPassword() {
         return this.password;
     }
