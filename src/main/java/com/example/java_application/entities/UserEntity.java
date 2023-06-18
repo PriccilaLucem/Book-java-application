@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
+import org.mindrot.jbcrypt.BCrypt;
 
 @Entity
 @Table(name = "users")
@@ -35,7 +36,7 @@ public class UserEntity implements Serializable{
     public UserEntity(Long id, String email, String password, String nickName, validateUser validateUser) {
         this.id = id;
         this.email = email;
-        this.password = password;
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         this.nickName = nickName;
         this.validateUser = validateUser;
     }
@@ -82,5 +83,7 @@ public class UserEntity implements Serializable{
         this.nickName = name;
     }
 
-
+    public Boolean checkPassword(String password){
+        return BCrypt.checkpw(password, this.password);
+    }
 }
