@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Objects;
 
-public class userDtoV1 {
+public class UserDtoV1 {
     private Long id;
     private String nickName;
     private String email;
@@ -13,10 +13,10 @@ public class userDtoV1 {
     private String password;
     private validateUser validateUser;
 
-    public userDtoV1() {
+    public UserDtoV1() {
     }
 
-    public userDtoV1(String email, Long id, String password, validateUser validateUser) {
+    public UserDtoV1(String email, Long id, String password, validateUser validateUser) {
         this.email = email;
         this.id = id;
         this.password = password;
@@ -65,22 +65,22 @@ public class userDtoV1 {
         this.validateUser = validateUser;
     }
 
-    public userDtoV1 email(String email) {
+    public UserDtoV1 email(String email) {
         setEmail(email);
         return this;
     }
 
-    public userDtoV1 id(Long id) {
+    public UserDtoV1 id(Long id) {
         setId(id);
         return this;
     }
 
-    public userDtoV1 password(String password) {
+    public UserDtoV1 password(String password) {
         setPassword(password);
         return this;
     }
 
-    public userDtoV1 validateUser(validateUser validateUser) {
+    public UserDtoV1 validateUser(validateUser validateUser) {
         setValidateUser(validateUser);
         return this;
     }
@@ -89,10 +89,10 @@ public class userDtoV1 {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof userDtoV1)) {
+        if (!(o instanceof UserDtoV1)) {
             return false;
         }
-        userDtoV1 userDtoV1 = (userDtoV1) o;
+        UserDtoV1 userDtoV1 = (UserDtoV1) o;
         return Objects.equals(email, userDtoV1.email) && Objects.equals(id, userDtoV1.id) && Objects.equals(password, userDtoV1.password) && Objects.equals(validateUser, userDtoV1.validateUser);
     }
 
