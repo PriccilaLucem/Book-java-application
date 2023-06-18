@@ -6,6 +6,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
 
@@ -15,12 +17,28 @@ public class UserEntity implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(nullable = false, unique = true, length = 100, name = "email")
     private String email;
-    private String password;
-    private String name;
+    @Column(name = "password", nullable = false)
+    private String password; 
+    @Column(name = "nick_name", nullable = false)
+    private String nickName;
+    @OneToOne
+    @JoinColumn(name = "validate_user_id", nullable = false)
+    private validateUser validateUser;
 
 
+    public UserEntity() {
+    }
+
+
+    public UserEntity(Long id, String email, String password, String nickName, validateUser validateUser) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.nickName = nickName;
+        this.validateUser = validateUser;
+    }
 
     public Long getId() {
         return this.id;
@@ -33,6 +51,16 @@ public class UserEntity implements Serializable{
     public String getEmail() {
         return this.email;
     }
+
+
+    public validateUser getValidateUser() {
+        return this.validateUser;
+    }
+
+    public void setValidateUser(validateUser validateUser) {
+        this.validateUser = validateUser;
+    }
+
 
     public void setEmail(String email) {
         this.email = email;
@@ -47,11 +75,11 @@ public class UserEntity implements Serializable{
     }
 
     public String getName() {
-        return this.name;
+        return this.nickName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.nickName = name;
     }
 
 

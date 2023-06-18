@@ -16,21 +16,19 @@ import java.util.Objects;
 public class validateUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
     private Long id;
-    @Column(name = "is_valid")
-    private Boolean isValid = false;
-    @Column(name = "valdated_date")
+    
+    @Column(name = "is_valid", nullable = false)
+    private Boolean isValid;
+    @Column(name = "validated_date")
     private Date validatedDate;
-
-
-
+  
     public validateUser() {
     }
 
-    public validateUser(Long id, Boolean isValid, Date validatedDate) {
+    public validateUser(Long id, Date validatedDate) {
         this.id = id;
-        this.isValid = isValid;
+        this.isValid = false;
         this.validatedDate = validatedDate;
     }
 
