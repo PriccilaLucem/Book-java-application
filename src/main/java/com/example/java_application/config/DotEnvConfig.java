@@ -10,14 +10,4 @@ public class DotEnvConfig {
         return Dotenv.configure().ignoreIfMissing().load();
     }
 
-    static {
-        DotenvLoader.loadEnvVariables();
-    }
-
-    private static class DotenvLoader {
-        private static void loadEnvVariables() {
-            Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-            dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
-        }
-    }
 }
