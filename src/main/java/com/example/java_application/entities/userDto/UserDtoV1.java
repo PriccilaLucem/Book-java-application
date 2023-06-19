@@ -1,6 +1,6 @@
 package com.example.java_application.entities.userDto;
 
-import com.example.java_application.entities.validateUser;
+import com.example.java_application.entities.ValidateUserEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
@@ -11,7 +11,7 @@ public class UserDtoV1 {
     private String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    private validateUser validateUser;
+    private ValidateUserEntity validateUser;
 
     public UserDtoV1() {
     }
@@ -55,11 +55,11 @@ public class UserDtoV1 {
         this.password = password;
     }
 
-    public validateUser getValidateUser() {
+    public ValidateUserEntity getValidateUser() {
         return this.validateUser;
     }
 
-    public void setValidateUser(validateUser validateUser) {
+    public void setValidateUser(ValidateUserEntity validateUser) {
         this.validateUser = validateUser;
     }
 
@@ -78,7 +78,7 @@ public class UserDtoV1 {
         return this;
     }
 
-    public UserDtoV1 validateUser(validateUser validateUser) {
+    public UserDtoV1 validateUser(ValidateUserEntity validateUser) {
         setValidateUser(validateUser);
         return this;
     }

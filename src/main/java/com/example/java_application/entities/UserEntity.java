@@ -30,7 +30,7 @@ public class UserEntity implements Serializable{
     private String nickName;
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "validate_user_id", nullable = true)
-    private validateUser validateUser;
+    private ValidateUserEntity validateUser;
 
 
     public UserEntity() {
@@ -70,12 +70,12 @@ public class UserEntity implements Serializable{
     }
 
     
-    public validateUser getValidateUser() {
+    public ValidateUserEntity getValidateUser() {
         return this.validateUser;
     }
 
-    public void setValidateUser(validateUser validateUser) {
-        this.validateUser = new validateUser();
+    public void setValidateUser(ValidateUserEntity validateUser) {
+        this.validateUser = new ValidateUserEntity();
     }
 
 
@@ -99,7 +99,5 @@ public class UserEntity implements Serializable{
         this.nickName = name;
     }
 
-    public Boolean checkPassword(String password){
-        return BCrypt.checkpw(password, this.password);
-    }
+   
 }

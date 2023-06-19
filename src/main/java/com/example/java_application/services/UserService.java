@@ -44,4 +44,10 @@ public class UserService {
         
         return userRepository.save(entity);
     }
+
+
+    public UserEntity findUserByEmail(String email){
+        UserEntity user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Invalid Email"));
+        return user;
+    }
 }

@@ -13,7 +13,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "validate_user")
-public class validateUser {
+public class ValidateUserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,11 +23,11 @@ public class validateUser {
     @Column(name = "validated_date")
     private Date validatedDate;
   
-    public validateUser() {
+    public ValidateUserEntity() {
         this.isValid = false;
     }
 
-    public validateUser(Long id, Date validatedDate) {
+    public ValidateUserEntity(Long id, Date validatedDate) {
         this.id = id;
         this.validatedDate = validatedDate;
     }
@@ -60,17 +60,17 @@ public class validateUser {
         this.validatedDate = validatedDate;
     }
 
-    public validateUser id(Long id) {
+    public ValidateUserEntity id(Long id) {
         setId(id);
         return this;
     }
 
-    public validateUser isValid(Boolean isValid) {
+    public ValidateUserEntity isValid(Boolean isValid) {
         setIsValid(isValid);
         return this;
     }
 
-    public validateUser validatedDate(Date validatedDate) {
+    public ValidateUserEntity validatedDate(Date validatedDate) {
         setValidatedDate(validatedDate);
         return this;
     }
@@ -79,10 +79,10 @@ public class validateUser {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof validateUser)) {
+        if (!(o instanceof ValidateUserEntity)) {
             return false;
         }
-        validateUser validateUser = (validateUser) o;
+        ValidateUserEntity validateUser = (ValidateUserEntity) o;
         return Objects.equals(id, validateUser.id) && Objects.equals(isValid, validateUser.isValid) && Objects.equals(validatedDate, validateUser.validatedDate);
     }
 
