@@ -14,17 +14,16 @@ import com.example.java_application.exceptions.BadRequestException;
 import com.example.java_application.exceptions.ConflictRequestException;
 import com.example.java_application.exceptions.NotFoundException;
 import com.example.java_application.exceptions.ResponseException;
-import com.example.java_application.exceptions.UnauthorizedException;
 
 @RestController
 @ControllerAdvice
 public class CostumizeResponseEntityHandler extends ResponseEntityExceptionHandler{
     
-    @ExceptionHandler(UnauthorizedException.class)
-    public final ResponseEntity<ResponseException> handleUnauthorized(Exception ex, WebRequest wr){
-        ResponseException exception = new ResponseException(new Date(), ex.getMessage(), wr.getDescription(false));
-        return new ResponseEntity<>(exception, HttpStatus.UNAUTHORIZED);
-    }
+    // @ExceptionHandler(UnauthorizedException.class)
+    // public final ResponseEntity<ResponseException> handleUnauthorized(Exception ex, WebRequest wr){
+    //     ResponseException exception = new ResponseException(new Date(), ex.getMessage(), wr.getDescription(false));
+    //     return new ResponseEntity<>(exception, HttpStatus.UNAUTHORIZED);
+    // }
 
     @ExceptionHandler(ConflictRequestException.class)
     public final ResponseEntity<ResponseException> handleConflict(Exception ex, WebRequest wr){
