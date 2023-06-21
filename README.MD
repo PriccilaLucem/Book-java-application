@@ -18,3 +18,11 @@ JBCrypt: A library for hashing passwords using the BCrypt hashing algorithm.
 - Book Management: Enables the creation of books and establishes a many-to-many relationship with users.
 - Database Migrations: Utilizes migrations to update the database schema in a controlled and versioned manner.
 - .env File: Uses a .env file to store sensitive variables that need to be changed, providing a secure way to manage configuration settings.
+
+# Not ready yet
+
+Missing dependencies
+
+- Swagger documentation
+- Books routes and entity
+- Front-end application
