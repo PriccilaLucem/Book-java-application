@@ -31,8 +31,9 @@ public class LoginController {
         try{
         UserEntity user = userService.findUserByEmail(entity.getEmail());
         entity.checkPassword(user.getPassword());
-           String token = Token.GenerateToken(Mapper.parseObject(user, UserDtoV1.class));
-           return ResponseEntity.ok().body(new Token(token)) ;
+           Token token = new Token();
+           token.GenerateToken(Mapper.parseObject(user, UserDtoV1.class));
+           return ResponseEntity.ok().body(token);
     
         }catch(NoSuchAlgorithmException e){
             throw new RuntimeException("No such alghortim");

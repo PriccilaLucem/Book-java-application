@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   mysql:
-    image: mysql:latest
+    image: mysql:5.7.42
     restart: always
     ports:
       - 3307:3307
@@ -19,7 +19,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - 8080:80
+      - 8080:8080
     depends_on:
       - mysql
     environment:

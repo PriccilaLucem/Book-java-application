@@ -12,16 +12,16 @@ import java.util.List;
 
 
 import org.springframework.security.core.Authentication;
+import org.hibernate.cfg.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;
 
 
 
 import com.example.java_application.entities.userDto.UserDtoV1;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -29,12 +29,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 
-@Component
 public class Token {
 
     private String token;
-    
 
+    @Value("${SECRET_KEY}")
+    private  String SECRET_KEY = Environment.getProperties().getProperty("SECRET_KEY");
+    
     public Token() {
     }
 
@@ -74,10 +75,16 @@ public class Token {
             "}";
     }
 
-    public static String GenerateToken(UserDtoV1 user) throws NoSuchAlgorithmException {
-        final String SECRET_KEY = Dotenv.load().get("SECRET_KEY");
+    private SecretKey generateKey(){
         byte[] secretKeyBytes  = Base64.getEncoder().encode(SECRET_KEY.getBytes());
         SecretKey key = new SecretKeySpec(secretKeyBytes,SignatureAlgorithm.HS256.getJcaName());
+        return key;
+    }
+
+    public void GenerateToken(UserDtoV1 user) throws NoSuchAlgorithmException {
+        
+        
+        SecretKey key = generateKey();
         String token = Jwts.builder()
 
         .signWith(key,SignatureAlgorithm.HS256)
@@ -87,7 +94,7 @@ public class Token {
         .claim("nick_name", user.getNickName())
         .compact();
 
-        return token;
+        this.token = token;
 
     }
  
@@ -100,10 +107,10 @@ public class Token {
     }
 
     public boolean validateToken(String jwtToken) {
-        final String SECRET_KEY = Dotenv.load().get("SECRET_KEY");
+
         
-        byte[] secretKeyBytes  = Base64.getEncoder().encode(SECRET_KEY.getBytes());
-        SecretKey key = new SecretKeySpec(secretKeyBytes,SignatureAlgorithm.HS256.getJcaName());
+        SecretKey key = generateKey();
+
         try{
             Jwts.parserBuilder()
             .setSigningKey(key).build().parse(jwtToken);
@@ -120,7 +127,6 @@ public class Token {
 
         List<String> roles = parseRolesFromToken(token);
 
-        System.out.println(roles);
         List<SimpleGrantedAuthority> authorities = createAuthorities(roles);
 
         return new UsernamePasswordAuthenticationToken(userId, null, authorities);
@@ -128,7 +134,6 @@ public class Token {
 
 
     private String parseUserIdFromToken(String token) { 
-        final String SECRET_KEY = Dotenv.load().get("SECRET_KEY");
         byte[] secretKeyBytes = Base64.getEncoder().encode(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(Keys.hmacShaKeyFor(secretKeyBytes))
@@ -142,7 +147,6 @@ public class Token {
     }
 
     private List<String> parseRolesFromToken(String token) {
-        final String SECRET_KEY = Dotenv.load().get("SECRET_KEY");
 
         byte[] secretKeyBytes = Base64.getEncoder().encode(SECRET_KEY.getBytes());
         Claims claims = Jwts.parserBuilder()
@@ -153,11 +157,11 @@ public class Token {
 
         List<String> roles = new ArrayList<>();
 
-        String email = claims.getSubject();
-        if (email != null && email.endsWith("@admin.com")) {
-            roles.add("ROLE_ADMIN");
+        Object obj = claims.getOrDefault("is_valid", "false");
+        if (obj.equals("is_valid")){
+            roles.add("ROLE_USER_IS_VALID");
         } else {
-            roles.add("ROLE_ADMIN");
+            roles.add("ROLE_USER_IS_NOT_VALID");
         }
         
         return roles;
@@ -169,6 +173,17 @@ public class Token {
             authorities.add(new SimpleGrantedAuthority(role));
         }
         return authorities;
+    }
+    public Claims parseTokenToObject(){
+        byte[] secretKeyBytes = Base64.getEncoder().encode(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor(secretKeyBytes))
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        System.out.println(claims);
+
+        return claims;
     }
 }
 

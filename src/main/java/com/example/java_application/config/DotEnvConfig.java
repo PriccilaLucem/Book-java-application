@@ -5,10 +5,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DotEnvConfig {
-     @Bean
+    @Bean
     public Dotenv dotenv() {
         return Dotenv.configure().ignoreIfMissing().load();
     }
+
     static {
         DotenvLoader.loadEnvVariables();
     }
