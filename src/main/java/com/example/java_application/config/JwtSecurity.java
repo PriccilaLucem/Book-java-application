@@ -35,7 +35,7 @@ public class JwtSecurity{
                 .authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers(HttpMethod.POST, "/api/v1/login", "api/v1/users").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/users/validate/**").hasAnyAuthority("ROLE_USER_IS_NOT_VALID")
-                .requestMatchers("/api/v1/**").hasAnyAuthority("ROLE_USER_IS_VALID") 
+                .requestMatchers("/api/v1/users").hasAnyAuthority("ROLE_USER_IS_VALID") 
                 .anyRequest().authenticated()
                     ).rememberMe((remember) -> remember
                      .rememberMeServices(rememberMeServices)

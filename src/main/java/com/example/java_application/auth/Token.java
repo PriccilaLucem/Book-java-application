@@ -1,5 +1,4 @@
 package com.example.java_application.auth;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Objects;
@@ -81,7 +80,7 @@ public class Token {
         return key;
     }
 
-    public void GenerateToken(UserDtoV1 user) throws NoSuchAlgorithmException {
+    public void GenerateToken(UserDtoV1 user) {
         
         
         SecretKey key = generateKey();
@@ -157,8 +156,8 @@ public class Token {
 
         List<String> roles = new ArrayList<>();
 
-        Object obj = claims.getOrDefault("is_valid", "false");
-        if (obj.equals("is_valid")){
+        Object obj = claims.getOrDefault("is valid", "false");
+        if (obj.equals(true)){
             roles.add("ROLE_USER_IS_VALID");
         } else {
             roles.add("ROLE_USER_IS_NOT_VALID");
@@ -181,7 +180,6 @@ public class Token {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        System.out.println(claims);
 
         return claims;
     }

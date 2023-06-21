@@ -43,7 +43,7 @@ public class UserController {
         System.out.println(userDtoV1);
         UserEntity user = Mapper.parseObject(userDtoV1, UserEntity.class);
         try{
-            return ResponseEntity.status(HttpStatus.CREATED).body(Mapper.parseObject(userService.createNewUser(user), UserDtoV1.class));
+            return ResponseEntity.status(HttpStatus.CREATED).body(Mapper.parseObject(userService.saveUser(user), UserDtoV1.class));
         }catch(DataIntegrityViolationException e){
 
             String msg = e.getMessage();
