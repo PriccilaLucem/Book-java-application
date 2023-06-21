@@ -63,9 +63,11 @@ public class UserController {
     }
     @PutMapping("/{user_id}")
     public ResponseEntity<?> putUser(@PathVariable(value = "user_id") Long id, @RequestBody UserDtoV1 userDtoV1){
-        userDtoV1.setId(id);
-        UserEntity user = userService.putUser(Mapper.parseObject(userDtoV1, UserEntity.class));
-        return ResponseEntity.accepted().body(Mapper.parseObject(user,UserDtoV1.class));
+        UserEntity entity = userService.getUser(id);
+        entity.setNickName(userDtoV1.getNickName());
+
+        userService.putUser(entity);
+        return ResponseEntity.accepted().body(Mapper.parseObject(entity, UserDtoV1.class));
     }
 
     }
