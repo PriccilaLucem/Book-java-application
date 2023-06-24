@@ -8,12 +8,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.example.java_application.exceptions.BadRequestException;
 
 @Entity
@@ -31,19 +35,25 @@ public class UserEntity implements Serializable{
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "validate_user_id", nullable = true)
     private ValidateUserEntity validateUser;
-
+    @ManyToMany
+    @JoinTable(name = "user_book_list", joinColumns = @JoinColumn(name="book_id"),
+    inverseJoinColumns = @JoinColumn(name="user_id")
+    )
+    List<BookEntity> bookList = new ArrayList<>();
 
     public UserEntity() {
     }
 
 
-    public UserEntity(Long id, String email, String password, String nickName) {
+    
+    public UserEntity(Long id, String email, String password, String nickName, List<BookEntity> bookList) {
         this.id = id;
         this.email = email;
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         this.nickName = nickName;
+        this.bookList = bookList;
     }
-
+    
     @PrePersist
     public void ValidateData(){
     
@@ -64,11 +74,18 @@ public class UserEntity implements Serializable{
     public void setId(Long id) {
         this.id = id;
     }
-
+    
     public String getEmail() {
         return this.email;
     }
+    
+    public List<BookEntity> getBookList() {
+        return this.bookList;
+    }
 
+    public void setBookList(List<BookEntity> bookList) {
+        this.bookList = bookList;
+    }
     
     public ValidateUserEntity getValidateUser() {
         return this.validateUser;

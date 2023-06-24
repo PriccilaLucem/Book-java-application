@@ -1,4 +1,4 @@
-CREATE TABLE `validate_user` (
+CREATE TABLE IF NOT EXISTS `validate_user` (
   `is_valid` bit(1) NOT NULL,
   `id` bigint NOT NULL AUTO_INCREMENT,
   `validated_date` datetime(6) DEFAULT NULL,
