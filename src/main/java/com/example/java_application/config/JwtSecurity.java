@@ -34,8 +34,8 @@ public class JwtSecurity{
                 .sessionManagement((SessionManagement) -> SessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers(HttpMethod.POST, "/api/v1/login", "api/v1/users").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/v1/users/validate/**").hasAnyAuthority("ROLE_USER_IS_NOT_VALID")
-                .requestMatchers("/api/v1/users").hasAnyAuthority("ROLE_USER_IS_VALID") 
+                .requestMatchers(HttpMethod.POST, "/api/v1/users/validate/**").hasRole("USER_IS_NOT_VALID")
+                .requestMatchers("/api/v1/users").hasRole("USER_IS_VALID") 
                 .anyRequest().authenticated()
                     ).rememberMe((remember) -> remember
                      .rememberMeServices(rememberMeServices)

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,6 +47,7 @@ public class ValidateUserController {
         if(claims.getId().equals(decodedId)){
             UserEntity entity = userService.getUser(Long.parseLong(decodedId));
             entity.getValidateUser().setIsValid(true);
+            entity.getValidateUser().setValidatedDate(new Date());
             userService.saveUser(entity);
             Token output = new Token();
             output.GenerateToken(Mapper.parseObject(entity, UserDtoV1.class));
