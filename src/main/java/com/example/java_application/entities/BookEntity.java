@@ -5,18 +5,25 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+
+import java.io.Serializable;
 import java.util.Objects;
+
+import com.example.java_application.exceptions.BadRequestException;
 
 @Entity
 @Table(name = "books")
-public class BookEntity {
+public class BookEntity implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "book_name", nullable = false)
     private String bookName;
-    
+    // private String author;
+    // private String publisher;
+
     public BookEntity() {
     }
 
@@ -32,6 +39,30 @@ public class BookEntity {
     public void setId(Long id) {
         this.id = id;
     }
+
+    @PrePersist 
+    public void validateData(){
+        if(this.bookName == null){
+            throw new BadRequestException("Book name is missing");
+        }
+    }
+
+    // public String getAuthor() {
+    //     return this.author;
+    // }
+
+    // public void setAuthor(String author) {
+    //     this.author = author;
+    // }
+
+    // public String getPublisher() {
+    //     return this.publisher;
+    // }
+
+    // public void setPublisher(String publisher) {
+    //     this.publisher = publisher;
+    // }
+
 
     public String getBookName() {
         return this.bookName;
