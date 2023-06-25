@@ -12,7 +12,6 @@ import java.util.List;
 
 import org.springframework.security.core.Authentication;
 import org.hibernate.cfg.Environment;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.nio.charset.StandardCharsets;
@@ -31,8 +30,6 @@ import jakarta.servlet.http.HttpServletRequest;
 public class Token {
 
     private String token;
-
-    @Value("${SECRET_KEY}")
     private  String SECRET_KEY = Environment.getProperties().getProperty("SECRET_KEY");
     
     public Token() {
@@ -121,7 +118,7 @@ public class Token {
         
     }
 
-     public Authentication getAuthentication(String token) {
+    public Authentication getAuthentication(String token) {
         String userId = parseUserIdFromToken(token);
 
         List<String> roles = parseRolesFromToken(token);
@@ -132,7 +129,9 @@ public class Token {
     }
 
 
-    private String parseUserIdFromToken(String token) { 
+    public static String parseUserIdFromToken(String token) {
+        String SECRET_KEY = Environment.getProperties().getProperty("SECRET_KEY");
+
         byte[] secretKeyBytes = Base64.getEncoder().encode(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(Keys.hmacShaKeyFor(secretKeyBytes))

@@ -24,5 +24,4 @@ JBCrypt: A library for hashing passwords using the BCrypt hashing algorithm.
 Missing dependencies
 
 - Swagger documentation
-- Books routes and entity
 - Front-end application

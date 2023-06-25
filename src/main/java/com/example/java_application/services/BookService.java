@@ -24,7 +24,7 @@ public class BookService {
         return Mapper.parseObject(bookRepository.findById(bookId).orElseThrow(() -> new NotFoundException("Book not found") ), BookDtoV1.class);
     }
 
-    public BookDtoV1 createBook(BookEntity book){
+    public BookDtoV1 createOrGetBook(BookEntity book){
         return Mapper.parseObject(bookRepository.getOrCreate(book.getBookName()), BookDtoV1.class);
     }
     public void deleteBook(Long bookId){

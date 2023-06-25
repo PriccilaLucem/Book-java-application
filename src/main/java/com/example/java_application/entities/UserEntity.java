@@ -16,8 +16,9 @@ import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.example.java_application.exceptions.BadRequestException;
 
 @Entity
@@ -35,23 +36,22 @@ public class UserEntity implements Serializable{
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "validate_user_id", nullable = true)
     private ValidateUserEntity validateUser;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_book_list", joinColumns = @JoinColumn(name="book_id"),
     inverseJoinColumns = @JoinColumn(name="user_id")
     )
-    List<BookEntity> bookList = new ArrayList<>();
+    Set<BookEntity> bookList = new HashSet<>();
 
     public UserEntity() {
     }
 
 
     
-    public UserEntity(Long id, String email, String password, String nickName, List<BookEntity> bookList) {
+    public UserEntity(Long id, String email, String password, String nickName) {
         this.id = id;
         this.email = email;
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         this.nickName = nickName;
-        this.bookList = bookList;
     }
     
     @PrePersist
@@ -71,6 +71,14 @@ public class UserEntity implements Serializable{
         return this.id;
     }
 
+    public void addBook(BookEntity book){
+        this.bookList.add(book);
+    }
+
+    public void removeBook(BookEntity book){
+        this.bookList.remove(book);
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -79,11 +87,11 @@ public class UserEntity implements Serializable{
         return this.email;
     }
     
-    public List<BookEntity> getBookList() {
+    public Set<BookEntity> getBookList() {
         return this.bookList;
     }
 
-    public void setBookList(List<BookEntity> bookList) {
+    public void setBookList(Set<BookEntity> bookList) {
         this.bookList = bookList;
     }
     

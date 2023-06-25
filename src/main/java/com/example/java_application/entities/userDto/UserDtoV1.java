@@ -1,9 +1,12 @@
 package com.example.java_application.entities.userDto;
 
+import com.example.java_application.entities.BookEntity;
 import com.example.java_application.entities.ValidateUserEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class UserDtoV1 {
     private Long id;
@@ -12,6 +15,7 @@ public class UserDtoV1 {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private ValidateUserEntity validateUser;
+    Set<BookEntity> bookList = new HashSet<>();
 
     public UserDtoV1() {
     }
@@ -29,6 +33,13 @@ public class UserDtoV1 {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public Set<BookEntity> getBookList() {
+        return this.bookList;
+    }
+    public void setBookList(Set<BookEntity> bookList) {
+        this.bookList = bookList;
     }
 
 
