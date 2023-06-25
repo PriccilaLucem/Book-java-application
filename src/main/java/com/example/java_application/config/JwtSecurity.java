@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -17,7 +16,7 @@ import org.springframework.security.web.authentication.rememberme.TokenBasedReme
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices.RememberMeTokenAlgorithm;
 
 import com.example.java_application.auth.JwtTokenFilter;
-import com.example.java_application.exceptions.ForbiddendException;
+import com.example.java_application.util.CustomAuthEntryPoint;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -27,11 +26,6 @@ import io.github.cdimascio.dotenv.Dotenv;
 @EnableMethodSecurity 
 public class JwtSecurity{
     
-
-    @Bean
-    public AccessDeniedHandler accessDeniedHandler(ObjectMapper objectMapper) {
-        return new ForbiddendException(objectMapper);
-    }
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
@@ -43,16 +37,23 @@ public class JwtSecurity{
                 .addFilterAfter(new JwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .httpBasic((HttpBasicConfigurer) -> HttpBasicConfigurer.disable())
                 .csrf((csrfConfigurer) -> csrfConfigurer.disable())
-                .sessionManagement((SessionManagement) -> SessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement((SessionManagement) -> SessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http
                 .authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers(HttpMethod.POST, "/api/v1/login", "api/v1/users").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/users/validate/**").hasRole("USER_IS_NOT_VALID")
                 .requestMatchers("/api/v1/users").hasRole("USER_IS_VALID")
                 .requestMatchers("/api/v1/books/**").hasRole("USER_IS_VALID")
-                .anyRequest().permitAll()
-                    ).rememberMe((remember) -> remember
+                .requestMatchers("/**").permitAll()
+                );
+
+        http.
+                rememberMe((remember) -> remember
                      .rememberMeServices(rememberMeServices)
-                    ).exceptionHandling((configurer) -> configurer.accessDeniedHandler(accessDeniedHandler(objectMapper())));
+                    )
+                .exceptionHandling((configurer) -> 
+                configurer.authenticationEntryPoint(new CustomAuthEntryPoint())
+                );
 
                  
         return http.build(); 

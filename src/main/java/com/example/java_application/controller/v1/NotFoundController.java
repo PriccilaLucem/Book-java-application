@@ -11,7 +11,6 @@ public class NotFoundController implements ErrorController {
 
     @RequestMapping("/error")
     public String handleError() {
-        // Implement your custom error handling logic here
-        throw new NotFoundException("Route does not exist"); // Return the name of your custom error page (e.g., "404.html")
+        throw new NotFoundException("Route does not exist");
     }
 }
