@@ -49,11 +49,10 @@ public class JwtSecurity{
                 .requestMatchers(HttpMethod.POST, "/api/v1/users/validate/**").hasRole("USER_IS_NOT_VALID")
                 .requestMatchers("/api/v1/users").hasRole("USER_IS_VALID")
                 .requestMatchers("/api/v1/books/**").hasRole("USER_IS_VALID")
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                     ).rememberMe((remember) -> remember
                      .rememberMeServices(rememberMeServices)
-                    ).exceptionHandling((configurer) -> configurer.accessDeniedHandler(accessDeniedHandler(objectMapper())
-                    ));
+                    ).exceptionHandling((configurer) -> configurer.accessDeniedHandler(accessDeniedHandler(objectMapper())));
 
                  
         return http.build(); 
@@ -72,5 +71,6 @@ public class JwtSecurity{
     public DefaultWebSecurityExpressionHandler expressionHandler() {
         return new DefaultWebSecurityExpressionHandler();
     }
+  
 
 }
