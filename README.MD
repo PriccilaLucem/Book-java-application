@@ -1,6 +1,15 @@
 # Simple project using java spring boot app
 
+
+## Swagger documentation route
+
+/swagger-ui/index.html#
+
+## Description
+
 This project is a simple Java Spring Boot application that focuses on user management, authentication, email verification, and database operations. It utilizes various dependencies to achieve these functionalities.
+
+### Features
 
 The project includes the following dependencies:
 
@@ -23,5 +32,4 @@ JBCrypt: A library for hashing passwords using the BCrypt hashing algorithm.
 
 Missing dependencies
 
-- Swagger documentation
 - Front-end application

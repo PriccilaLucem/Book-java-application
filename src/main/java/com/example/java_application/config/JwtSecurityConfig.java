@@ -24,7 +24,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity 
-public class JwtSecurity{
+public class JwtSecurityConfig{
     
     @Bean
     public ObjectMapper objectMapper() {
@@ -40,7 +40,7 @@ public class JwtSecurity{
                 .sessionManagement((SessionManagement) -> SessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers(HttpMethod.POST, "/api/v1/login", "api/v1/users").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/login", "api/v1/users", "/swagger-ui/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/users/validate/**").hasRole("USER_IS_NOT_VALID")
                 .requestMatchers("/api/v1/users").hasRole("USER_IS_VALID")
                 .requestMatchers("/api/v1/books/**").hasRole("USER_IS_VALID")
